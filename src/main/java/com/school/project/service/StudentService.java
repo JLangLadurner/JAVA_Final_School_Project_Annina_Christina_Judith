@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 
-@Service("userService")
+@Service("studentService")
 
 public class StudentService {
     private StudentRepository studentRepository;
@@ -19,24 +19,26 @@ public class StudentService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public StudentService(StudentRepository userRepository,
+    public StudentService(StudentRepository studentRepository,
                        RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.studentRepository = userRepository;
+        this.studentRepository = studentRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Student findStudentByEmail(String email) {
-        return studentRepository.findByEmail(email);
+    public Student findStudentByEmail(String stud_email) {
+        return studentRepository.findStudentByEmail(stud_email);
     }
 
     public Student saveStudent(Student student) {
-        student.setPassword(bCryptPasswordEncoder.encode(student.getPassword()));
+        student.setStud_password(bCryptPasswordEncoder.encode(student.getStud_password()));
         student.setActive(1);
-        Role userRole = roleRepository.findByRole("Student");
+        Role studentRole = roleRepository.findByRole("Student");
         student.setRoles(new HashSet<Role>(Arrays.asList(studentRole)));
         return studentRepository.save(student);
     }
+
+
 
 }

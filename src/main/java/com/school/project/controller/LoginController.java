@@ -39,7 +39,7 @@ public class LoginController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid Student student, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        Student studentExists = studentService.findStudentByEmail(student.getEmail());
+        Student studentExists = studentService.findStudentByEmail(student.getStud_email());
         if (studentExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",
@@ -50,7 +50,7 @@ public class LoginController {
         } else {
             studentService.saveStudent(student);
             modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new Student());
+            modelAndView.addObject("student", new Student());
             modelAndView.setViewName("registration");
 
         }
@@ -62,7 +62,7 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Student student = studentService.findStudentByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + student.getStud_firstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
+        modelAndView.addObject("stud_firstName", "Welcome " + student.getStud_firstName() + " " + student.getStud_lastName() + " (" + student.getStud_email() + ")");
         modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
         modelAndView.setViewName("admin/home");
         return modelAndView;
