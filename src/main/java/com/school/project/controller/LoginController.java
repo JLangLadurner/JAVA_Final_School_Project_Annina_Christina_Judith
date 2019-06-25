@@ -69,4 +69,24 @@ public class LoginController {
     }
 
 
+    /*@RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
+    public ModelAndView list(){
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+
+        if(user.getRole() == 1){
+            String result = "";
+            for(User users : repository.findAll()){
+                if(users.getRole() == 2){
+                    result += "<div>" + users.toString() + "</div>";
+                }
+            }
+            modelAndView.addObject("adminMessage",result);
+        }
+        modelAndView.setViewName("teacher/studentlist");
+        return modelAndView;
+    }*/
+
 }
