@@ -28,11 +28,11 @@ public class StudentService {
     }
 
     public Student findStudentByEmail(String stud_email) {
-        return studentRepository.findStudentByEmail(stud_email);
+        return studentRepository.findByEmail(stud_email);
     }
 
     public Student saveStudent(Student student) {
-        student.setStud_password(bCryptPasswordEncoder.encode(student.getStud_password()));
+        student.setPassword(bCryptPasswordEncoder.encode(student.getPassword()));
         student.setActive(1);
         Role studentRole = roleRepository.findByRole("Student");
         student.setRoles(new HashSet<Role>(Arrays.asList(studentRole)));

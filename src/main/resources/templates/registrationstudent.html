@@ -25,9 +25,9 @@
                 <h5>First Name</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('stud_firstName')}" th:errors="*{stud_firstName}"
+                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
                                class="validation-message"></label>
-                        <input type="text" th:field="*{stud_firstName}" placeholder="First Name"
+                        <input type="text" th:field="*{firstName}" placeholder="First Name"
                                class="form-control"/>
                     </div>
                 </div>
@@ -35,56 +35,58 @@
                 <h5>Last Name</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('stud_lastName')}" th:errors="*{stud_lastName}"
+                        <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
                                class="validation-message"></label>
-                        <input type="text" th:field="*{stud_lastName}"
+                        <input type="text" th:field="*{lastName}"
                                placeholder="Last Name" class="form-control"/>
                     </div>
                 </div>
                 <h5>Email</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="text" th:field="*{stud_email}" placeholder="Email"
+                        <input type="text" th:field="*{email}" placeholder="Email"
                                class="form-control"/> <label
-                            th:if="${#fields.hasErrors('stud_email')}" th:errors="*{stud_email}"
+                            th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
                             class="validation-message"></label>
                     </div>
                 </div>
                 <h5>Password</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <input type="password" th:field="*{stud_password}"
+                        <input type="password" th:field="*{password}"
                                placeholder="Password" class="form-control"/> <label
-                            th:if="${#fields.hasErrors('stud_password')}" th:errors="*{stud_password}"
+                            th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                             class="validation-message"></label>
                     </div>
                 </div>
                 <h5>Your Age</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('stud_age')}" th:errors="*{stud_age}"
+                        <label th:if="${#fields.hasErrors('age')}" th:errors="*{age}"
                                class="validation-message"></label>
-                        <input type="text" th:field="*{stud_age}" placeholder="Age"
+                        <input type="text" th:field="*{age}" placeholder="Age"
                                class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('stud_oldClass')}" th:errors="*{stud_oldClass}"
+                        <label th:if="${#fields.hasErrors('oldClass')}" th:errors="*{oldClass}"
                                class="validation-message"></label>
-                        <input type="text" th:field="*{stud_oldClass}" placeholder="Age"
+                        <input type="text" th:field="*{oldClass}" placeholder="Last Years Class"
                                class="form-control"/>
                     </div>
                 </div>
 
+               <!-- <input type="hidden" th:field="*{fk_parentId}" value=null
+                       placeholder="course" class="form-control"/>-->
+
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block">Register User</button>
+                        <button type="submit" class="btn btn-primary btn-block">Register Student</button>
                     </div>
                 </div>
 
-                <input type="hidden" th:field="*{fk_parentId}" value=null
-                       placeholder="course" class="form-control"/>
+
 
                 <h2><span class="text-success" th:utext="${successMessage}"></span></h2>
 

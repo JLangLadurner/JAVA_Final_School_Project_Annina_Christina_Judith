@@ -27,44 +27,44 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value="/registration", method = RequestMethod.GET)
+    @RequestMapping(value="/registrationstudent", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         Student student = new Student();
         modelAndView.addObject("student", student);
-        modelAndView.setViewName("registration");
+        modelAndView.setViewName("registrationstudent");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/registrationstudent", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid Student student, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        Student studentExists = studentService.findStudentByEmail(student.getStud_email());
+        Student studentExists = studentService.findStudentByEmail(student.getEmail());
         if (studentExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",
-                            "There is already a user registered with the email provided");
+                            "There is already a Student registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
+            modelAndView.setViewName("registrationstudent");
         } else {
             studentService.saveStudent(student);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("successMessage", "Student has been registered successfully");
             modelAndView.addObject("student", new Student());
-            modelAndView.setViewName("registration");
+            modelAndView.setViewName("registrationstudent");
 
         }
         return modelAndView;
     }
 
-    @RequestMapping(value="/admin/home", method = RequestMethod.GET)
+    @RequestMapping(value="/home", method = RequestMethod.GET)
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Student student = studentService.findStudentByEmail(auth.getName());
-        modelAndView.addObject("stud_firstName", "Welcome " + student.getStud_firstName() + " " + student.getStud_lastName() + " (" + student.getStud_email() + ")");
-        modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("admin/home");
+        modelAndView.addObject("firstName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
+        modelAndView.addObject("adminMessage","Content Available Only for Users with Student Role");
+        modelAndView.setViewName("/home");
         return modelAndView;
     }
 

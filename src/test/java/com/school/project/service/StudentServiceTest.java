@@ -35,17 +35,17 @@ public class StudentServiceTest {
 				mockBCryptPasswordEncoder);
 		student = Student.builder()
 				.id(1)
-				.stud_firstName("Max")
-				.stud_lastName("Musterman")
-				.stud_email("test@test.com")
-				.stud_password("12345")
-				.stud_age(11)
-				.stud_oldClass("5a")
+				.firstName("Max")
+				.lastName("Musterman")
+				.email("test@test.com")
+				.password("12345")
+				.age(11)
+				.oldClass("5a")
 				.build();
 
 		Mockito.when(mockStudentRepository.save(any()))
 				.thenReturn(student);
-		Mockito.when(mockStudentRepository.findStudentByEmail(anyString()))
+		Mockito.when(mockStudentRepository.findByEmail(anyString()))
 				.thenReturn(student);
 	}
 
@@ -58,7 +58,7 @@ public class StudentServiceTest {
 		final Student result = studentServiceUnderTest.findStudentByEmail(email);
 
 		// Verify the results
-		assertEquals(email, result.getStud_email());
+		assertEquals(email, result.getEmail());
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class StudentServiceTest {
 		Student result = studentServiceUnderTest.saveStudent(Student.builder().build());
 
 		// Verify the results
-		assertEquals(email, result.getStud_email());
+		assertEquals(email, result.getEmail());
 	}
 
 

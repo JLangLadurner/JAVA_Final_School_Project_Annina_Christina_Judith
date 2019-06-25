@@ -25,31 +25,31 @@ public class Student {
     @Column(name = "studentId")
     private int id;
 
-    @Column(name = "stud_firstName")
+    @Column(name = "firstName")
     @NotEmpty(message = "*Please provide your first name")
-    private String stud_firstName;
+    private String firstName;
 
-    @Column(name = "stud_lastName")
+    @Column(name = "lastName")
     @NotEmpty(message = "*Please provide your last name")
-    private String stud_lastName;
+    private String lastName;
 
     @Column(name = "email")
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
-    private String stud_email;
+    private String email;
 
-    @Column(name = "stud_age")
+    @Column(name = "age")
     @NotEmpty(message = "*Please provide your age")
-    private int stud_age;
+    private int age;
 
-    @Column(name = "stud_oldClass")
+    @Column(name = "oldClass")
     @NotEmpty(message = "*Please provide your last Class")
-    private String stud_oldClass;
+    private String oldClass;
 
-    @Column(name = "stud_password")
+    @Column(name = "password")
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotEmpty(message = "*Please provide your password")
-    private String stud_password;
+    private String password;
 
     @Column(name = "active")
     private int active;
@@ -74,52 +74,52 @@ public class Student {
         this.id = id;
     }
 
-    public String getStud_firstName() {
-        return stud_firstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setStud_firstName(String stud_firstName) {
-        this.stud_firstName = stud_firstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getStud_lastName() {
-        return stud_lastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setStud_lastName(String stud_lastName) {
-        this.stud_lastName = stud_lastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getStud_email() {
-        return stud_email;
+    public String getEmail() {
+        return email;
     }
 
-    public void setStud_email(String stud_email) {
-        this.stud_email = stud_email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getStud_age() {
-        return stud_age;
+    public int getAge() {
+        return age;
     }
 
-    public void setStud_age(int stud_age) {
-        this.stud_age = stud_age;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getStud_oldClass() {
-        return stud_oldClass;
+    public String getOldClass() {
+        return oldClass;
     }
 
-    public void setStud_oldClass(String stud_oldClass) {
-        this.stud_oldClass = stud_oldClass;
+    public void setOldClass(String oldClass) {
+        this.oldClass = oldClass;
     }
 
-    public String getStud_password() {
-        return stud_password;
+    public String getPassword() {
+        return password;
     }
 
-    public void setStud_password(String stud_password) {
-        this.stud_password = stud_password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getActive() {
@@ -137,7 +137,6 @@ public class Student {
     public void setStatus(int status) {
         this.status = status;
     }
-
 
     public Set<Role> getRoles() {
         return roles;
