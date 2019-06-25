@@ -40,7 +40,7 @@ public class Student {
 
     @Column(name = "age")
     @NotEmpty(message = "*Please provide your age")
-    private int age;
+    private String age;
 
     @Column(name = "oldClass")
     @NotEmpty(message = "*Please provide your last Class")
@@ -98,11 +98,11 @@ public class Student {
         this.email = email;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

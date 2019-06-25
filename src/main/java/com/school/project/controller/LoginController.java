@@ -39,10 +39,10 @@ public class LoginController {
     @RequestMapping(value = "/registrationstudent", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid Student student, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        Student studentExists = studentService.findStudentByEmail(student.getEmail());
+        Student studentExists = studentService.findByEmail(student.getEmail());
         if (studentExists != null) {
             bindingResult
-                    .rejectValue("email", "error.user",
+                    .rejectValue("email", "error.student",
                             "There is already a Student registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
@@ -61,7 +61,7 @@ public class LoginController {
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Student student = studentService.findStudentByEmail(auth.getName());
+        Student student = studentService.findByEmail(auth.getName());
         modelAndView.addObject("firstName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
         modelAndView.addObject("adminMessage","Content Available Only for Users with Student Role");
         modelAndView.setViewName("/home");

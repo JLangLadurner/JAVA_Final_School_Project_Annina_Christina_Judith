@@ -39,7 +39,7 @@ public class StudentServiceTest {
 				.lastName("Musterman")
 				.email("test@test.com")
 				.password("12345")
-				.age(11)
+				.age("11")
 				.oldClass("5a")
 				.build();
 
@@ -55,7 +55,7 @@ public class StudentServiceTest {
 		final String email = "test@test.com";
 
 		// Run the test
-		final Student result = studentServiceUnderTest.findStudentByEmail(email);
+		final Student result = studentServiceUnderTest.findByEmail(email);
 
 		// Verify the results
 		assertEquals(email, result.getEmail());

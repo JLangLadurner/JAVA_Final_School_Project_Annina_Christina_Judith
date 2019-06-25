@@ -27,8 +27,8 @@ public class StudentService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Student findStudentByEmail(String stud_email) {
-        return studentRepository.findByEmail(stud_email);
+    public Student findByEmail(String email) {
+        return studentRepository.findByEmail(email);
     }
 
     public Student saveStudent(Student student) {
