@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -29,6 +32,7 @@ public class SchoolApp extends Application {
     private TextField studLastNameTxtF = new TextField();
     private TextField studOldClassTxtF = new TextField();
     private TextField schoolClassTxtF = new TextField();
+    private Text actionStatus = new Text();
 
 
     @Override
@@ -99,6 +103,8 @@ public class SchoolApp extends Application {
             studFirstNameTxtF.setText(student.getStudFirstName());
             studLastNameTxtF.setText(student.getStudLastName());
             studOldClassTxtF.setText(student.getStudOldClass());
+            String className = dbAccess.getSchoolClass(student);
+            schoolClassTxtF.setText(className);
         }
     }
 
@@ -113,6 +119,57 @@ public class SchoolApp extends Application {
             SchoolClass schoolClass = dataSchoolClass.get(new_val.intValue());
             schoolClassTxtF.setText(schoolClass.getClassName());
         }
+    }
+
+    private class SaveButtonListener implements EventHandler<ActionEvent> {
+        Student student;
+        SchoolClass schoolClass;
+
+        @Override
+        public void handle(ActionEvent ae) {
+
+            String classNameNew = null;
+            int classIndex = schoolClassListView.getSelectionModel().getSelectedIndex();
+            int studIndex = studentListView.getSelectionModel().getSelectedIndex();
+            if (classIndex != -1) {
+                classNameNew = schoolClassTxtF.getText();
+            }
+
+
+            if (classIndex < 0) { // no data selected or no data
+                return;
+            }
+
+            // validate class
+            if (classNameNew.length() != 2) {
+
+                actionStatus.setText("You have to choose a class");
+                schoolClassTxtF.requestFocus();
+                schoolClassTxtF.selectAll();
+                return;
+            }
+
+            int classID;
+            for (int i = 0; i < schoolClassListView.getItems().size(); i++) {
+                schoolClass = schoolClassListView.getSelectionModel().getSelectedItems().get(i);
+                if (schoolClass.getClassName().equalsIgnoreCase(classNameNew)) {
+                    classID = schoolClass.getClassID();
+                    studentListView.getItems().get(studIndex).setStudNewClassID(classID);
+                    student = studentListView.getSelectionModel().getSelectedItem();
+                    studentListView.refresh();
+
+                    try {
+                        dbAccess.updateClass(student, schoolClass);
+                    } catch (Exception e) {
+
+                        displayException(e);
+                    }
+                    actionStatus.setText("Student is saved in his new class");
+                }
+                break;
+            }
+        }
+
     }
 
     public void start(Stage primaryStage) throws Exception{
@@ -166,18 +223,10 @@ public class SchoolApp extends Application {
         schoolClassHBox.setPadding(new Insets(0,20,50,20));
 
         Button saveBtn = new Button("Save");
-        saveBtn.setOnAction(event -> {
-            int selIdx = schoolClassListView.getSelectionModel().getSelectedIndex();
-            if (selIdx != -1) {
-                String className = schoolClassTxtF.getText();
-                schoolClassListView.getItems().get(selIdx).setClassName(className);
-                schoolClassListView.refresh();
-            }
-        });
-
+        saveBtn.setOnAction(new SaveButtonListener());
 
         VBox dataVBox = new VBox(studToClassLbl, studIDHBox, studFirstNameHBox, studLastNameHBox,
-                studOldClassHBox, schoolClassHBox, saveBtn);
+                studOldClassHBox, schoolClassHBox, saveBtn, actionStatus);
         dataVBox.setSpacing(30);
         dataVBox.setPadding(new Insets (20,20,20,20));
 

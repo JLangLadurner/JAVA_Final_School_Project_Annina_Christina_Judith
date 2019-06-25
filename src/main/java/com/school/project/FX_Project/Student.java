@@ -6,12 +6,14 @@ public class Student {
     private String studFirstName;
     private String studLastName;
     private String studOldClass;
+    private int studNewClassID;
 
-    public Student(int studentID, String studFirstName, String studLastName, String studOldClass) {
+    public Student(int studentID, String studFirstName, String studLastName, String studOldClass, int studNewClassID) {
         this.studentID = studentID;
         this.studFirstName = studFirstName;
         this.studLastName = studLastName;
         this.studOldClass = studOldClass;
+        this.studNewClassID = studNewClassID;
     }
 
     public int getStudentID() {
@@ -45,5 +47,17 @@ public class Student {
     @Override
     public String toString() {
         return studFirstName +" " + studLastName;
+    }
+
+    public void setStudOldClass(String studOldClass) {
+        this.studOldClass = studOldClass;
+    }
+
+    public int getStudNewClassID() {
+        return studNewClassID;
+    }
+
+    public void setStudNewClassID(int studNewClassID) {
+        this.studNewClassID = studNewClassID;
     }
 }
