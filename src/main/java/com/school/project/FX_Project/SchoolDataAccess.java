@@ -86,7 +86,10 @@ public class SchoolDataAccess {
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         pstmnt.setInt(1,student.getStudentID());
         ResultSet rs = pstmnt.executeQuery();
-        String className = rs.getString("class_name");
+        String className = "";
+        while(rs.next()){
+            className = rs.getString("class_name");
+        }
         pstmnt.close();
         return className;
     }

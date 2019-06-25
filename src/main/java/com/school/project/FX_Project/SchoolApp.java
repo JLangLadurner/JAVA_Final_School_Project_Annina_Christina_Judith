@@ -103,7 +103,13 @@ public class SchoolApp extends Application {
             studFirstNameTxtF.setText(student.getStudFirstName());
             studLastNameTxtF.setText(student.getStudLastName());
             studOldClassTxtF.setText(student.getStudOldClass());
-            String className = dbAccess.getSchoolClass(student);
+            String className = "";
+            try {
+                className = dbAccess.getSchoolClass(student);
+            } catch (Exception e) {
+
+                displayException(e);
+            }
             schoolClassTxtF.setText(className);
         }
     }
