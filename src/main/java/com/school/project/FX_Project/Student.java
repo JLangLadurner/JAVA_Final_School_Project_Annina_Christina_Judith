@@ -1,4 +1,4 @@
-package com.school.project.FXclasses;
+package com.school.project.FX_Project;
 
 public class Student {
 

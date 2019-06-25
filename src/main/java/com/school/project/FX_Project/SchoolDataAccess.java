@@ -1,4 +1,4 @@
-package com.school.project.FXclasses;
+package com.school.project.FX_Project;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,6 +53,19 @@ public class SchoolDataAccess {
             list.add(new Student(studentID, studFirstName, studLastName, studOldClass));
         }
         pstmnt.close(); // also closes related result set
+        return list;
+    }
+    public List<SchoolClass> getAllRowsSchoolClasses() throws SQLException {
+        String sql = "SELECT DISTINCT classname FROM teacherclasskey ORDER BY classname";
+        PreparedStatement pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<SchoolClass> list = new ArrayList<>();
+
+        while(rs.next()){
+            String className = rs.getString("classname");
+            list.add(new SchoolClass(className));
+        }
+        pstmnt.close();
         return list;
     }
 }
