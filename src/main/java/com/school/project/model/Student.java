@@ -62,7 +62,10 @@ public class Student {
     @JoinTable(name = "parent", joinColumns = @JoinColumn(name = "parentId"), inverseJoinColumns = @JoinColumn(name = "fk_parentId"))
     private Set<Parent> parent;*/
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student")
+    Set<Grade> grade;
+
+   @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "studentId"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
