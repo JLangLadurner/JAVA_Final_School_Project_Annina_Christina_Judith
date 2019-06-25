@@ -66,6 +66,7 @@ public class Student {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "studentId"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
     public int getId() {
         return id;
     }
