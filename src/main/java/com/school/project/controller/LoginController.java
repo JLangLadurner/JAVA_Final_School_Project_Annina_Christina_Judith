@@ -2,8 +2,10 @@ package com.school.project.controller;
 
 import javax.validation.Valid;
 
+import com.school.project.model.Grade;
 import com.school.project.model.Student;
 import com.school.project.service.StudentService;
+import com.school.project.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +20,9 @@ public class LoginController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    GradeRepository gradeRepository;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
@@ -69,24 +74,22 @@ public class LoginController {
     }
 
 
-    /*@RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
+    @RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
     public ModelAndView list(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        Student student = studentService.findByEmail(auth.getName());
+        modelAndView.addObject("userName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
+        String result = "";
 
-        if(user.getRole() == 1){
-            String result = "";
-            for(User users : repository.findAll()){
-                if(users.getRole() == 2){
-                    result += "<div>" + users.toString() + "</div>";
-                }
+            for(Grade grade : gradeRepository.findAll()){
+
+                    result += "<div>" + grade.toString() + "</div>";
             }
             modelAndView.addObject("adminMessage",result);
-        }
-        modelAndView.setViewName("teacher/studentlist");
+
+        modelAndView.setViewName("/student/gradelist");
         return modelAndView;
-    }*/
+    }
 
 }

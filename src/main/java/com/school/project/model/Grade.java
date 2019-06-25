@@ -25,6 +25,11 @@ public class Grade {
 
     int grade;
 
+    @Override
+    public String toString() {
+        return "The subject is : " + getSubject() + " Your Grade is: " + getGrade();
+    }
+
     // standard getters and setters
 
 
@@ -59,4 +64,5 @@ public class Grade {
     public void setGrade(int grade) {
         this.grade = grade;
     }
+
 }

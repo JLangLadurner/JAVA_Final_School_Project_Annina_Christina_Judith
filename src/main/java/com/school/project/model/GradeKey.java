@@ -20,6 +20,8 @@ public class GradeKey implements Serializable {
         this.subjectId = subjectId;
     }
 
+    public GradeKey() {};
+
     public Long getStudentId() {
         return studentId;
     }
@@ -35,6 +37,7 @@ public class GradeKey implements Serializable {
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
+
 //We need to provide an implementation of the hashcode() and equals() methods
 //None of the fields can be an entity themselves resource: https://www.baeldung.com/jpa-many-to-many
     @Override
