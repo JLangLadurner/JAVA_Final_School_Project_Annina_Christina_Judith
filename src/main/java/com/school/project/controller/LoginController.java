@@ -85,7 +85,9 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Grade agrade = gradeService.findByStudent(auth.getName());
         Student student = studentService.findByEmail(auth.getName());
+
         modelAndView.addObject("userName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
+
         String result = "";
 
             for(Grade grade : gradeRepository.findAll()){
