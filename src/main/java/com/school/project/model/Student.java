@@ -75,7 +75,8 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Your Classmates are:  Name: " + firstName + " Surname: " + lastName;
+        return "<list>Your Classmates are:  <tr><td>" + firstName + "</td>" +
+                                                "<td>"+lastName+ "</td></tr>";
     }
 
 

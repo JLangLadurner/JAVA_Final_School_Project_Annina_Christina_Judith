@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 
 public interface StudentRepository extends JpaRepository<Student, Long>{
     Student findByEmail(String email);
+
+    //take out if code breaks
+
+    //Student findByClass(int newClass);
 }

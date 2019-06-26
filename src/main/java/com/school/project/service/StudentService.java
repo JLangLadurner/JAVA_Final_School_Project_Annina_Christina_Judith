@@ -31,6 +31,8 @@ public class StudentService {
         return studentRepository.findByEmail(email);
     }
 
+    //public Student findByClass(int newClass){return studentRepository.findByClass(newClass);}
+
     public Student saveStudent(Student student) {
         student.setPassword(bCryptPasswordEncoder.encode(student.getPassword()));
         student.setActive(1);

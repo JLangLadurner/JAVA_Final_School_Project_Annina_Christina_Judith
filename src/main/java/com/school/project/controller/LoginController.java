@@ -76,13 +76,13 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Student student = studentService.findByEmail(auth.getName());
-        modelAndView.addObject("firstName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
+        modelAndView.addObject("first_name", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Student Role");
 
         if (student.getNewClass() == 1) {
             String result = "";
             for (Student students : studentRepository.findAll()) {
-                result += "<div>" + students.toString() + "</div>";
+                result += "<list>" + students.toString() + "</list>";
 
             }
             modelAndView.addObject("adminMessage", result);
