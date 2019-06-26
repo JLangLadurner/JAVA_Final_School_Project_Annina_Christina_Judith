@@ -23,11 +23,11 @@ public class LoginController {
     @Autowired
     private StudentService studentService;
 
-   /* @Autowired
-    private GradeService gradeService;*/
+    @Autowired
+    private GradeService gradeService;
 
-   /* @Autowired
-    GradeRepository gradeRepository;*/
+    @Autowired
+    GradeRepository gradeRepository;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
