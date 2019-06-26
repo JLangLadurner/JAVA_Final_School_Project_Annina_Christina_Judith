@@ -73,7 +73,10 @@ public class Student {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "studentId"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-
+    @Override
+    public String toString() {
+        return "Your Classmates are:  Name: " + firstName + " Surname: " + lastName;
+    }
 
 
     public int getId() {

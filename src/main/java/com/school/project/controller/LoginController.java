@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 
 import com.school.project.model.Student;
+import com.school.project.repository.StudentRepository;
 import com.school.project.service.StudentService;
 import com.school.project.service.GradeService;
 import com.school.project.repository.GradeRepository;
@@ -29,16 +30,19 @@ public class LoginController {
     @Autowired
     GradeRepository gradeRepository;
 
-    @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login(){
+    @Autowired
+    StudentRepository studentRepository;
+
+    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
 
-    @RequestMapping(value="/registrationstudent", method = RequestMethod.GET)
-    public ModelAndView registration(){
+    @RequestMapping(value = "/registrationstudent", method = RequestMethod.GET)
+    public ModelAndView registration() {
         ModelAndView modelAndView = new ModelAndView();
         Student student = new Student();
         modelAndView.addObject("student", student);
@@ -67,16 +71,27 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/home", method = RequestMethod.GET)
-    public ModelAndView home(){
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Student student = studentService.findByEmail(auth.getName());
         modelAndView.addObject("firstName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Content Available Only for Users with Student Role");
+        modelAndView.addObject("adminMessage", "Content Available Only for Users with Student Role");
+
+        if (student.getActive() == 1) {
+            String result = "";
+            for (Student students : studentRepository.findAll()) {
+                result += "<div>" + students.toString() + "</div>";
+
+            }
+            modelAndView.addObject("adminMessage", result);
+        }
+
         modelAndView.setViewName("/home");
         return modelAndView;
-    }
+        }
+
 
 
     /*@RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
@@ -100,4 +115,5 @@ public class LoginController {
         return modelAndView;
     }*/
 
-}
+    }
+
