@@ -79,7 +79,7 @@ public class LoginController {
         modelAndView.addObject("firstName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Student Role");
 
-        if (student.getActive() == 1) {
+        if (student.getNewClass() == 1) {
             String result = "";
             for (Student students : studentRepository.findAll()) {
                 result += "<div>" + students.toString() + "</div>";
