@@ -68,6 +68,7 @@
                                class="form-control"/>
                     </div>
                 </div>
+                <h5>last Years Class</h5>
                 <div class="form-group">
                     <div class="col-sm-9">
                         <label th:if="${#fields.hasErrors('oldClass')}" th:errors="*{oldClass}"
@@ -78,6 +79,9 @@
                 </div>
 
 
+
+                        <input type="hidden" th:field="*{newClass}" value=null placeholder="this years Class"
+                               class="form-control"/>
 
                 <div class="form-group">
                     <div class="col-sm-9">
