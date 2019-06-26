@@ -2,7 +2,7 @@ package com.school.project.controller;
 
 import javax.validation.Valid;
 
-import com.school.project.model.Grade;
+
 import com.school.project.model.Student;
 import com.school.project.service.StudentService;
 import com.school.project.service.GradeService;
@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import com.school.project.model.Grade;
 
 @Controller
 public class LoginController {
@@ -22,11 +23,11 @@ public class LoginController {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private GradeService gradeService;
+   /* @Autowired
+    private GradeService gradeService;*/
 
-    @Autowired
-    GradeRepository gradeRepository;
+   /* @Autowired
+    GradeRepository gradeRepository;*/
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
@@ -78,7 +79,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
+    /*@RequestMapping(value="/student/gradelist", method = RequestMethod.GET)
     public ModelAndView list(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -95,6 +96,6 @@ public class LoginController {
 
         modelAndView.setViewName("/student/gradelist");
         return modelAndView;
-    }
+    }*/
 
 }
