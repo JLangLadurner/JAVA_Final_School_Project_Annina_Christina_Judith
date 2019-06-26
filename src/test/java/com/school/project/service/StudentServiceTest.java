@@ -41,6 +41,7 @@ public class StudentServiceTest {
 				.password("12345")
 				.age("11")
 				.oldClass("5a")
+				.newClass(1)
 				.build();
 
 		Mockito.when(mockStudentRepository.save(any()))
