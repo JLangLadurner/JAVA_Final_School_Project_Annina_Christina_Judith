@@ -33,6 +33,7 @@ public class SchoolDataAccess {
     public void closeDb() throws SQLException {
         conn.close();
     }
+
     /**
      * Get all db records
      * @return
@@ -56,6 +57,7 @@ public class SchoolDataAccess {
         pstmnt.close(); // also closes related result set
         return list;
     }
+
     public List<SchoolClass> getAllRowsSchoolClasses() throws SQLException {
         String sql = "SELECT class_ID, class_name FROM schoolclass ORDER BY class_name";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
@@ -70,6 +72,7 @@ public class SchoolDataAccess {
         pstmnt.close();
         return list;
     }
+
     public void updateClass(Student student, SchoolClass schoolClass)
             throws SQLException {
 
@@ -79,8 +82,8 @@ public class SchoolDataAccess {
         pstmnt.setInt(2, student.getStudentID());
         pstmnt.executeUpdate();
         pstmnt.close();
-
     }
+
     public String getSchoolClass(Student student) throws Exception{
         String sql = "SELECT schoolclass.class_name FROM schoolclass JOIN student ON student.fk_stud_new_classID = schoolclass.class_ID WHERE student.studentId = ?";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
@@ -92,5 +95,65 @@ public class SchoolDataAccess {
         }
         pstmnt.close();
         return className;
+    }
+
+    public void insertGrades(int studID, String bioGrade, String mathGrade, String drawGrade, String gerGrade,
+                             String surfGrade, String phyGrade, String geoGrade) throws Exception{
+        String sql = "INSERT INTO studgrade VALUES (?, ?, ?)";
+        PreparedStatement pstmnt = conn.prepareStatement(sql);
+
+        pstmnt.setString(1, bioGrade);
+        pstmnt.setInt(2, 1);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, mathGrade);
+        pstmnt.setInt(2, 2);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, drawGrade);
+        pstmnt.setInt(2, 3);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, gerGrade);
+        pstmnt.setInt(2, 4);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, surfGrade);
+        pstmnt.setInt(2, 5);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, phyGrade);
+        pstmnt.setInt(2, 6);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.setString(1, geoGrade);
+        pstmnt.setInt(2, 7);
+        pstmnt.setInt(3, studID);
+        pstmnt.executeUpdate();
+
+        pstmnt.close();
+    }
+
+    public boolean studentIdExists(Student student) throws SQLException {
+
+        String sql = "SELECT COUNT(fk_studentId) FROM studgrade WHERE fk_studentId = ?";
+        PreparedStatement pstmnt = conn.prepareStatement(sql);
+        pstmnt.setInt(1, student.getStudentID());
+        ResultSet rs = pstmnt.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+        pstmnt.close();
+        if (count > 0) {
+
+            return true;
+        }
+
+        return false;
     }
 }

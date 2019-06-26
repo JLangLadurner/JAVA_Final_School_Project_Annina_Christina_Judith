@@ -1,24 +1,14 @@
 package com.school.project.FX_Project;
 
-public class GradeTable {
-    private int studGradeID;
+public class Grade {
     private int grade;
     private int fkSubjectID;
     private int fkStudentID;
 
-    public GradeTable(int studGradeID, int grade, int fkSubjectID, int fkStudentID) {
-        this.studGradeID = studGradeID;
+    public Grade(int grade, int fkSubjectID, int fkStudentID) {
         this.grade = grade;
         this.fkSubjectID = fkSubjectID;
         this.fkStudentID = fkStudentID;
-    }
-
-    public int getStudGradeID() {
-        return studGradeID;
-    }
-
-    public void setStudGradeID(int studGradeID) {
-        this.studGradeID = studGradeID;
     }
 
     public int getGrade() {
