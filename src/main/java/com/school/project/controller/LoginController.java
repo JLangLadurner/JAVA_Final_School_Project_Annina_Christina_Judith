@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import com.school.project.model.Grade;
 import com.school.project.model.Student;
 import com.school.project.service.StudentService;
+import com.school.project.service.GradeService;
 import com.school.project.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,9 @@ public class LoginController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private GradeService gradeService;
 
     @Autowired
     GradeRepository gradeRepository;
@@ -78,6 +82,7 @@ public class LoginController {
     public ModelAndView list(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Grade agrade = gradeService.findByStudent(auth.getName());
         Student student = studentService.findByEmail(auth.getName());
         modelAndView.addObject("userName", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
         String result = "";

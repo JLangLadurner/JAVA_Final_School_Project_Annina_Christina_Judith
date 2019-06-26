@@ -23,7 +23,7 @@ public class Grade {
     @JoinColumn(name = "subjectId")
     Subject subject;
 
-    int grade;
+    String grade;
 
     @Override
     public String toString() {
@@ -57,11 +57,11 @@ public class Grade {
         this.subject = subject;
     }
 
-    public int getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 
