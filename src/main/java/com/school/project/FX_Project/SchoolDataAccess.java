@@ -18,7 +18,7 @@ public class SchoolDataAccess {
         //Open a connection
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/schoolTest1" +
+                "jdbc:mysql://localhost:3306/schoolTest" +
                         "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                 "root",
                 "");
@@ -31,7 +31,8 @@ public class SchoolDataAccess {
     public void closeDb() throws SQLException {
         conn.close();
     }
-    
+
+    // get the student data out of the database
     public List<Student> getAllRowsStudents()  throws SQLException {
 
         String sql = "SELECT student_id, first_name, last_name, old_class, fk_new_class_id  FROM " + studentTable + " ORDER BY last_name";
@@ -39,6 +40,7 @@ public class SchoolDataAccess {
         ResultSet rs = pstmnt.executeQuery();
         List<Student> list = new ArrayList<>();
 
+        // store the data in the provided variables in a list
         while (rs.next()) {
             int studentID = rs.getInt("student_id");
             String studFirstName = rs.getString("first_name");
@@ -47,16 +49,18 @@ public class SchoolDataAccess {
             int studNewClassID = rs.getInt("fk_new_class_id");
             list.add(new Student(studentID, studFirstName, studLastName, studOldClass, studNewClassID));
         }
-        pstmnt.close(); // also closes related result set
+        pstmnt.close();
         return list;
     }
 
+    // get class data out of the database
     public List<SchoolClass> getAllRowsSchoolClasses() throws SQLException {
         String sql = "SELECT class_ID, class_name FROM schoolclass ORDER BY class_name";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         List<SchoolClass> list = new ArrayList<>();
 
+        // stores the classname in a list
         while(rs.next()){
             int classID = rs.getInt("class_ID");
             String className = rs.getString("class_name");
@@ -66,6 +70,7 @@ public class SchoolDataAccess {
         return list;
     }
 
+    // save the class into the student table in the database
     public void updateClass(Student student, SchoolClass schoolClass)
             throws SQLException {
 
@@ -77,8 +82,10 @@ public class SchoolDataAccess {
         pstmnt.close();
     }
 
+    // get the class from a specific student
     public String getSchoolClass(Student student) throws Exception{
-        String sql = "SELECT schoolclass.class_name FROM schoolclass JOIN student ON student.fk_new_class_id = schoolclass.class_ID WHERE student.student_Id = ?";
+        String sql = "SELECT schoolclass.class_name FROM schoolclass JOIN student ON student.fk_new_class_id = schoolclass.class_ID " +
+                "WHERE student.student_Id = ?";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         pstmnt.setInt(1,student.getStudentID());
         ResultSet rs = pstmnt.executeQuery();
@@ -90,8 +97,9 @@ public class SchoolDataAccess {
         return className;
     }
 
-    public void insertGrades(int studID, String mathGrade, String gerGrade, String engGrade, String bioGrade, String musGrade, String drawGrade,
-                             String surfGrade) throws Exception{
+    // saves the grades into the grade table for the specific student(id) and the specific subjects(id)
+    public void insertGrades(int studID, String mathGrade, String gerGrade, String engGrade, String bioGrade,
+                             String musGrade, String drawGrade, String surfGrade) throws Exception{
         String sql = "INSERT INTO grade VALUES (?, ?, ?)";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
 
@@ -133,7 +141,8 @@ public class SchoolDataAccess {
         pstmnt.close();
     }
 
-    public boolean studentIdExists(Student student) throws SQLException {
+    // gets the data to check if the student is already graded
+    public boolean gradesExists(Student student) throws SQLException {
 
         String sql = "SELECT COUNT(student_id) FROM grade WHERE student_id = ?";
         PreparedStatement pstmnt = conn.prepareStatement(sql);

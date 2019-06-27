@@ -106,7 +106,7 @@ public class SchoolApp extends Application {
             if ((new_val.intValue() < 0) || (new_val.intValue() >= dataStudent.size())) {
                 return; // invalid data
             }
-            // set fields for the selected student (ID, name, surname, oldClass
+            // set fields for the selected student (ID, name, surname, oldClass)
             Student student = dataStudent.get(new_val.intValue());
             studIDTxtF.setText(Integer.toString(student.getStudentID()));
             studFirstNameTxtF.setText(student.getStudFirstName());
@@ -131,7 +131,7 @@ public class SchoolApp extends Application {
             if ((new_val.intValue() < 0) || (new_val.intValue() >= dataSchoolClass.size())) {
                 return; // invalid data
             }
-            // set fields for the selected student (ID, name, surname, oldClass
+            // set field for the selected schoolclass (classname)
             SchoolClass schoolClass = dataSchoolClass.get(new_val.intValue());
             schoolClassTxtF.setText(schoolClass.getClassName());
         }
@@ -145,6 +145,7 @@ public class SchoolApp extends Application {
         public void handle(ActionEvent ae) {
 
             String classNameNew = null;
+            // data needed for saving
             int classIndex = schoolClassListView.getSelectionModel().getSelectedIndex();
             int studIndex = studentListView.getSelectionModel().getSelectedIndex();
 
@@ -166,6 +167,7 @@ public class SchoolApp extends Application {
                 return;
             }
 
+            // to get the classID out from the classname
             int classID;
             for (int i = 0; i < schoolClassListView.getItems().size(); i++) {
                 schoolClass = schoolClassListView.getSelectionModel().getSelectedItems().get(i);
@@ -175,6 +177,7 @@ public class SchoolApp extends Application {
                     student = studentListView.getSelectionModel().getSelectedItem();
                     studentListView.refresh();
 
+                    // save the data in the database
                     try {
                         dbAccess.updateClass(student, schoolClass);
                     } catch (Exception e) {
@@ -198,10 +201,12 @@ public class SchoolApp extends Application {
         Label welcomeLbl= new Label("Welcome to SchoolApp");
         welcomeLbl.setStyle("-fx-font: 20 arial;");
         Text text = new Text("Please select task");
+
         Button button1 = new Button("Add students to classes");
         Button button2 = new Button("Add grades to students");
         button1.setOnAction(event -> primaryStage.setScene(studToClassScene));
         button2.setOnAction(event -> primaryStage.setScene(gradesToStudScene));
+
         VBox layoutBox = new VBox(20);
         layoutBox.setPadding(new Insets(70, 70, 70, 70));
         layoutBox.getChildren().addAll(welcomeLbl, text, button1, button2);
@@ -365,25 +370,28 @@ public class SchoolApp extends Application {
             String surfGrade = surfTxtF.getText();
 
             // validate grade
-            if ((bioGrade.length() > 1) || (mathGrade.length() > 1) || (gerGrade.length() > 1) || (musGrade.length() > 1) || (engGrade.length() > 1)) {
-                if(!drawGrade.equalsIgnoreCase("very good") && !drawGrade.equalsIgnoreCase("well done")
-                        && !drawGrade.equalsIgnoreCase("successful") && !drawGrade.equalsIgnoreCase("not successful")
-                && !surfGrade.equalsIgnoreCase("very good") && !surfGrade.equalsIgnoreCase("well done")
-                        && !surfGrade.equalsIgnoreCase("successful") && !surfGrade.equalsIgnoreCase("not successful")) {
-                    actionStatusGrade.setText("Please check the grades! Note: Drawing and Surfing are graded as follows: very good, well done, successful, not successful");
+            if (((bioGrade.length() > 1) || (mathGrade.length() > 1) || (gerGrade.length() > 1) || (musGrade.length() > 1)
+                    || (engGrade.length() > 1)) ||
+                    (!drawGrade.equalsIgnoreCase("very good") && !drawGrade.equalsIgnoreCase("well done")
+                        && !drawGrade.equalsIgnoreCase("successful") && !drawGrade.equalsIgnoreCase("not successful"))
+                || (!surfGrade.equalsIgnoreCase("very good") && !surfGrade.equalsIgnoreCase("well done")
+                        && !surfGrade.equalsIgnoreCase("successful") && !surfGrade.equalsIgnoreCase("not successful"))) {
+
+                    actionStatusGrade.setText("Please check the grades! Note: Drawing and Surfing are graded as follows:" +
+                            " very good, well done, successful, not successful");
                     return;
-                }
             }
 
             // check if student already has grades
             student = dataStudent.get(ix);
 
-            if (isStudentAlreadyInDb(student)) {
+            if (hasStudentAlreadyGrades(student)) {
 
                 actionStatusGrade.setText("This student already has grades");
                 return;
             }
 
+            // save grades in the database
             try {
                 dbAccess.insertGrades(studentID, mathGrade, gerGrade, engGrade, bioGrade, musGrade, drawGrade, surfGrade);
             } catch (Exception e) {
@@ -394,12 +402,13 @@ public class SchoolApp extends Application {
         }
     }
 
-    private boolean isStudentAlreadyInDb(Student student) {
+    // check if student
+    private boolean hasStudentAlreadyGrades(Student student) {
 
         boolean bool = false;
 
         try {
-            bool = dbAccess.studentIdExists(student);
+            bool = dbAccess.gradesExists(student);
         }
         catch (Exception e) {
 
