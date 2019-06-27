@@ -3,3 +3,13 @@
     font-size: 22px;
     color: #004080;
 }
+
+.panel-heading{
+font-size: 22px;
+}
+
+.class-message-text {
+    font-style: normal;
+    font-size: 16px;
+    color: #000000;
+}

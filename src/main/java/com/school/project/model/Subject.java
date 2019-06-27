@@ -6,19 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "subject")
+
+
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id")
+    @Column(name = "subjectId")
     private int id;
-    @Column(name = "role")
-    private String role;
+    @Column(name = "subjectName")
+    private String subjectName;
+
+    //mapped via GradeKey
+    @OneToMany(mappedBy = "subject")
+    Set<Grade> grade;
 }
