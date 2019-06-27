@@ -10,13 +10,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -25,6 +23,7 @@ public class SchoolApp extends Application {
 
     private SchoolDataAccess dbAccess;
     private ListView<Student> studentListView;
+    private ListView<Student> studentListViewGrade;
     private ObservableList<Student> dataStudent;
     private ListView<SchoolClass> schoolClassListView;
     private ObservableList<SchoolClass> dataSchoolClass;
@@ -33,7 +32,8 @@ public class SchoolApp extends Application {
     private TextField studLastNameTxtF = new TextField();
     private TextField studOldClassTxtF = new TextField();
     private TextField schoolClassTxtF = new TextField();
-    private Text actionStatus = new Text();
+    private Text actionStatusStud = new Text();
+    private Text actionStatusGrade = new Text();
     private Scene welcomeScene, studToClassScene, gradesToStudScene;
     private TextField gradesStudNameTxtF = new TextField();
     private TextField bioTxtF = new TextField();
@@ -41,8 +41,8 @@ public class SchoolApp extends Application {
     private TextField drawTxtF = new TextField();
     private TextField gerTxtF = new TextField();
     private TextField surfTxtF = new TextField();
-    private TextField phyTxtF = new TextField();
-    private TextField geoTxtF = new TextField();
+    private TextField musTxtF = new TextField();
+    private TextField engTxtF = new TextField();
 
     @Override
     public void init() {
@@ -147,6 +147,7 @@ public class SchoolApp extends Application {
             String classNameNew = null;
             int classIndex = schoolClassListView.getSelectionModel().getSelectedIndex();
             int studIndex = studentListView.getSelectionModel().getSelectedIndex();
+
             if (classIndex != -1) {
                 classNameNew = schoolClassTxtF.getText();
             }
@@ -159,9 +160,9 @@ public class SchoolApp extends Application {
             // validate class
             if (classNameNew.length() != 2) {
 
-                actionStatus.setText("You have to choose a class");
-                schoolClassTxtF.requestFocus();
-                schoolClassTxtF.selectAll();
+                actionStatusStud.setText("You have to choose a class");
+                //schoolClassTxtF.requestFocus();
+                //schoolClassTxtF.selectAll();
                 return;
             }
 
@@ -180,7 +181,7 @@ public class SchoolApp extends Application {
 
                         displayException(e);
                     }
-                    actionStatus.setText("Student is saved in his new class");
+                    actionStatusStud.setText("Student is saved in his new class");
                 }
                 break;
             }
@@ -190,36 +191,51 @@ public class SchoolApp extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("SchoolApp");
 
+
+
+
         // Welcome Scene
-        Label label1= new Label("Welcome to SchoolApp");
+        Label welcomeLbl= new Label("Welcome to SchoolApp");
+        welcomeLbl.setStyle("-fx-font: 20 arial;");
         Text text = new Text("Please select task");
         Button button1 = new Button("Add students to classes");
         Button button2 = new Button("Add grades to students");
         button1.setOnAction(event -> primaryStage.setScene(studToClassScene));
         button2.setOnAction(event -> primaryStage.setScene(gradesToStudScene));
-        VBox layout1 = new VBox(20);
-        layout1.setPadding(new Insets(30, 30, 30, 30));
-        layout1.getChildren().addAll(label1, text, button1, button2);
-        welcomeScene= new Scene(layout1, 300, 250);
+        VBox layoutBox = new VBox(20);
+        layoutBox.setPadding(new Insets(70, 70, 70, 70));
+        layoutBox.getChildren().addAll(welcomeLbl, text, button1, button2);
+        layoutBox.setAlignment(Pos.TOP_CENTER);
+        layoutBox.setMinSize(600, 400);
+        welcomeScene= new Scene(layoutBox);
+
+
 
 
         // Student to Class Scene
-        Label studToClassLbl = new Label("Insert student to class");
+        Label studToClassLbl = new Label("Select a student and the appropriate class for the coming school year");
         studToClassLbl.setLineSpacing(30);
+        studToClassLbl.setStyle("-fx-font: 18 arial;");
+        studToClassLbl.setAlignment(Pos.CENTER);
 
         studentListView = new ListView();
         studentListView.setPrefHeight(175);
         studentListView.getSelectionModel().selectedIndexProperty().addListener(
-                new SchoolApp.ListSelectChangeListenerStudents());
+                new ListSelectChangeListenerStudents());
         dataStudent = getDbDataStudents();
         studentListView.setItems(dataStudent);
+        studentListView.setMaxHeight(270);
+        studentListView.setPrefWidth(170);
 
         schoolClassListView = new ListView();
         schoolClassListView.setPrefHeight(175);
         schoolClassListView.getSelectionModel().selectedIndexProperty().addListener(
-                new SchoolApp.ListSelectChangeListenerSchoolClasses());
+                new ListSelectChangeListenerSchoolClasses());
         dataSchoolClass = getDbDataSchoolClasses();
         schoolClassListView.setItems(dataSchoolClass);
+        schoolClassListView.setMaxHeight(270);
+        schoolClassListView.setPrefWidth(80);
+
 
         Label studIDLbl = new Label("Student ID");
         Label studFirstNameLbl = new Label("First Name");
@@ -227,43 +243,32 @@ public class SchoolApp extends Application {
         Label studOldClassLbl = new Label("Last class passed");
         Label schoolClassIDLbl = new Label("Class this year");
 
-        studIDTxtF.setEditable(false);
-        HBox studIDHBox = new HBox(studIDLbl, studIDTxtF);
-        studIDHBox.setSpacing(50);
-        studIDHBox.setPadding(new Insets(0, 20, 0, 20));
+        VBox lblBox = new VBox(studIDLbl, studFirstNameLbl, studLastNameLbl, studOldClassLbl, schoolClassIDLbl);
+        lblBox.setSpacing(29);
 
-        studFirstNameTxtF.setEditable(false);
-        HBox studFirstNameHBox = new HBox(studFirstNameLbl, studFirstNameTxtF);
-        studFirstNameHBox.setSpacing(50);
-        studFirstNameHBox.setPadding(new Insets(0, 20, 0, 20));
+        VBox txtFBox = new VBox(studIDTxtF, studFirstNameTxtF, studLastNameTxtF, studOldClassTxtF, schoolClassTxtF);
+        txtFBox.setSpacing(20);
 
-        studLastNameTxtF.setEditable(false);
-        HBox studLastNameHBox = new HBox(studLastNameLbl, studLastNameTxtF);
-        studLastNameHBox.setSpacing(50);
-        studLastNameHBox.setPadding(new Insets(0, 20, 0, 20));
-
-        studOldClassTxtF.setEditable(false);
-        HBox studOldClassHBox = new HBox(studOldClassLbl, studOldClassTxtF);
-        studOldClassHBox.setSpacing(50);
-        studOldClassHBox.setPadding(new Insets(0, 20, 0, 20));
-
-        HBox schoolClassHBox = new HBox(schoolClassIDLbl, schoolClassTxtF);
-        schoolClassHBox.setSpacing(50);
-        schoolClassHBox.setPadding(new Insets(0,20,50,20));
+        HBox dataBox = new HBox(studentListView, lblBox, txtFBox, schoolClassListView);
+        dataBox.setSpacing(30);
 
         Button saveStudentBtn = new Button("Save");
         saveStudentBtn.setOnAction(new SaveStudentButtonListener());
+        saveStudentBtn.setStyle("-fx-background-color: lightgreen; ");
+        saveStudentBtn.setPrefWidth(70);
         Button studToClassBackBtn = new Button("back");
         studToClassBackBtn.setOnAction(event -> primaryStage.setScene(welcomeScene));
-        HBox btnBoxStudent = new HBox(saveStudentBtn, actionStatus, studToClassBackBtn);
+        studToClassBackBtn.setStyle("-fx-background-color: lightblue;");
+        studToClassBackBtn.setPrefWidth(70);
+        HBox btnBoxStudent = new HBox(saveStudentBtn, studToClassBackBtn,actionStatusStud);
+        btnBoxStudent.setAlignment(Pos.CENTER);
+        btnBoxStudent.setSpacing(20);
 
-        VBox dataVBox = new VBox(studToClassLbl, studIDHBox, studFirstNameHBox, studLastNameHBox,
-                studOldClassHBox, schoolClassHBox, btnBoxStudent);
-        dataVBox.setSpacing(30);
-        dataVBox.setPadding(new Insets (20,20,20,20));
-
-        HBox allHBox = new HBox(studentListView, dataVBox, schoolClassListView);
-        studToClassScene = new Scene(allHBox);
+        VBox allBox = new VBox( studToClassLbl, dataBox, btnBoxStudent);
+        allBox.setPadding(new Insets(30,30,30,30));
+        allBox.setSpacing(30);
+        allBox.setAlignment(Pos.CENTER);
+        studToClassScene = new Scene(allBox);
 
 
 
@@ -274,53 +279,55 @@ public class SchoolApp extends Application {
         gradAppLbl.setMinHeight(20);
         gradAppLbl.setWrapText(true);
         gradAppLbl.setStyle("-fx-font: 20 arial;");
+
         Label studLbl = new Label("Students:");
         Text studName = new Text ("Student");
-        Text bioTxt = new Text ("Biology");
-        Text mathTxt = new Text ("Math");
-        Text drawTxt = new Text ("Drawing");
-        Text gerTxt = new Text ("German");
-        Text surfTxt = new Text ("Surfing");
-        Text phyTxt = new Text ("Physics");
-        Text geoTxt = new Text ("Geography");
+        Text bioTxt = new Text ("Math");
+        Text mathTxt = new Text ("German");
+        Text drawTxt = new Text ("English");
+        Text gerTxt = new Text ("Biology");
+        Text surfTxt = new Text ("Music");
+        Text phyTxt = new Text ("Drawing");
+        Text geoTxt = new Text ("Surfing");
 
-        studentListView = new ListView();
-        studentListView.setPrefHeight(175);
-        studentListView.getSelectionModel().selectedIndexProperty().addListener(
-                new SchoolApp.ListSelectChangeListenerStudents());
+        studentListViewGrade = new ListView();
+        studentListViewGrade.setPrefHeight(175);
+        studentListViewGrade.getSelectionModel().selectedIndexProperty().addListener(
+                new ListSelectChangeListenerStudents());
         dataStudent = getDbDataStudents();
-        studentListView.setItems(dataStudent);
-        studentListView.setPrefWidth(150);
-        studentListView.setMaxHeight(410);
+        studentListViewGrade.setItems(dataStudent);
+        studentListViewGrade.setPrefWidth(150);
+        studentListViewGrade.setMaxHeight(410);
 
         Button saveGradesBtn = new Button("Save");
+        saveGradesBtn.setStyle("-fx-background-color: lightgreen; ");
+        saveGradesBtn.setMinWidth(70);
         saveGradesBtn.setOnAction(new SaveGradesButtonListener());
         Button gradesBackBtn = new Button("back");
+        gradesBackBtn.setMinWidth(70);
+        gradesBackBtn.setStyle("-fx-background-color: lightblue;");
         gradesBackBtn.setOnAction(event -> primaryStage.setScene(welcomeScene));
-
-        HBox studNameBox = new HBox(gradesStudNameTxtF);
-        studNameBox.setSpacing(5);
-        studNameBox.setPrefWidth(40);
 
         VBox txtBox = new VBox(studName, bioTxt,mathTxt,drawTxt,gerTxt,surfTxt,phyTxt,geoTxt);
         txtBox.setSpacing(40);
-        txtBox.setPadding(new Insets(0,10,20,40));
+        txtBox.setPadding(new Insets(0,10,20,50));
 
         HBox btnBoxGrades = new HBox(saveGradesBtn, gradesBackBtn);
-        btnBoxGrades.setSpacing(50);
+        btnBoxGrades.setSpacing(20);
 
-        VBox txtFieldBox = new VBox(studNameBox, bioTxtF, mathTxtF, drawTxtF, gerTxtF, surfTxtF, phyTxtF, geoTxtF, btnBoxGrades, actionStatus);
+        VBox txtFieldBox = new VBox(gradesStudNameTxtF, mathTxtF, gerTxtF, engTxtF, bioTxtF, musTxtF, drawTxtF, surfTxtF, btnBoxGrades);
         txtFieldBox.setSpacing(30);
 
-        HBox generalBox = new HBox(studentListView, txtBox, txtFieldBox);
-        //generalBox.setSpacing(20);
-        generalBox.setPadding(new Insets(30,50,50,50));
+        HBox generalBox = new HBox(studentListViewGrade, txtBox, txtFieldBox);
+        generalBox.setPadding(new Insets(30,50,20,50));
 
-        VBox showbox = new VBox(gradAppLbl, generalBox);
+        actionStatusGrade.setWrappingWidth(350);
+        actionStatusGrade.setTextAlignment(TextAlignment.CENTER);
+        VBox showbox = new VBox(gradAppLbl, generalBox, actionStatusGrade);
         showbox.setPadding(new Insets(40, 5,5,5));
         showbox.setAlignment(Pos.TOP_CENTER);
 
-        gradesToStudScene = new Scene(showbox);
+        gradesToStudScene = new Scene(showbox, 580, 650);
 
 
 
@@ -340,30 +347,32 @@ public class SchoolApp extends Application {
         public void handle(ActionEvent ae) {
             Student student;
 
-            int ix = studentListView.getSelectionModel().getSelectedIndex();
+            int ix = studentListViewGrade.getSelectionModel().getSelectedIndex();
 
             if (ix < 0) { // no student selected
-                actionStatus.setText("no student selected");
+                actionStatusGrade.setText("no student selected");
                 return;
             }
 
-            int studentID = studentListView.getSelectionModel().getSelectedItem().getStudentID();
+            int studentID = studentListViewGrade.getSelectionModel().getSelectedItem().getStudentID();
 
-            String bioGrade = bioTxtF.getText();
             String mathGrade = mathTxtF.getText();
-            String drawGrade = drawTxtF.getText();
             String gerGrade = gerTxtF.getText();
+            String engGrade = engTxtF.getText();
+            String bioGrade = bioTxtF.getText();
+            String musGrade = musTxtF.getText();
+            String drawGrade = drawTxtF.getText();
             String surfGrade = surfTxtF.getText();
-            String phyGrade = phyTxtF.getText();
-            String geoGrade = geoTxtF.getText();
 
             // validate grade
-            if ((bioGrade.length() > 1) || (mathGrade.length() > 1) || (drawGrade.length() < 9) || (gerGrade.length() > 1) || (surfGrade.length() < 9) || (phyGrade.length() > 1) || (geoGrade.length() > 1)) {
-
-                actionStatus.setText("Please check the grades");
-                /*nametxt.requestFocus();
-                nametxt.selectAll();*/
-                return;
+            if ((bioGrade.length() > 1) || (mathGrade.length() > 1) || (gerGrade.length() > 1) || (musGrade.length() > 1) || (engGrade.length() > 1)) {
+                if(!drawGrade.equalsIgnoreCase("very good") && !drawGrade.equalsIgnoreCase("well done")
+                        && !drawGrade.equalsIgnoreCase("successful") && !drawGrade.equalsIgnoreCase("not successful")
+                && !surfGrade.equalsIgnoreCase("very good") && !surfGrade.equalsIgnoreCase("well done")
+                        && !surfGrade.equalsIgnoreCase("successful") && !surfGrade.equalsIgnoreCase("not successful")) {
+                    actionStatusGrade.setText("Please check the grades! Note: Drawing and Surfing are graded as follows: very good, well done, successful, not successful");
+                    return;
+                }
             }
 
             // check if student already has grades
@@ -371,17 +380,17 @@ public class SchoolApp extends Application {
 
             if (isStudentAlreadyInDb(student)) {
 
-                actionStatus.setText("This student already has grades");
+                actionStatusGrade.setText("This student already has grades");
                 return;
             }
 
             try {
-                dbAccess.insertGrades(studentID, bioGrade, mathGrade, drawGrade, gerGrade, surfGrade, phyGrade, geoGrade);
+                dbAccess.insertGrades(studentID, mathGrade, gerGrade, engGrade, bioGrade, musGrade, drawGrade, surfGrade);
             } catch (Exception e) {
 
                 displayException(e);
             }
-            actionStatus.setText("Grades are saved");
+            actionStatusGrade.setText("Grades are saved");
         }
     }
 

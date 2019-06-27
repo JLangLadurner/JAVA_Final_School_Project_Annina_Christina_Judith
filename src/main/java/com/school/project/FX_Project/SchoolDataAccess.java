@@ -13,14 +13,12 @@ public class SchoolDataAccess {
     public SchoolDataAccess()
             throws SQLException, ClassNotFoundException {
 
-        // Class.forName("org.hsqldb.jdbc.JDBCDriver" );
-
         //Check if JDBC driver is available
         Class.forName("com.mysql.cj.jdbc.Driver");
         //Open a connection
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/schoolTest" +
+                "jdbc:mysql://localhost:3306/schoolTest1" +
                         "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                 "root",
                 "");
@@ -33,25 +31,20 @@ public class SchoolDataAccess {
     public void closeDb() throws SQLException {
         conn.close();
     }
-
-    /**
-     * Get all db records
-     * @return
-     * @throws SQLException
-     */
+    
     public List<Student> getAllRowsStudents()  throws SQLException {
 
-        String sql = "SELECT studentId, stud_firstName, stud_lastName, stud_old_class, fk_stud_new_classID  FROM " + studentTable + " ORDER BY stud_lastName";
+        String sql = "SELECT student_id, first_name, last_name, old_class, fk_new_class_id  FROM " + studentTable + " ORDER BY last_name";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         List<Student> list = new ArrayList<>();
 
         while (rs.next()) {
-            int studentID = rs.getInt("studentId");
-            String studFirstName = rs.getString("stud_firstName");
-            String studLastName = rs.getString("stud_lastName");
-            String studOldClass = rs.getString("stud_old_class");
-            int studNewClassID = rs.getInt("fk_stud_new_classID");
+            int studentID = rs.getInt("student_id");
+            String studFirstName = rs.getString("first_name");
+            String studLastName = rs.getString("last_name");
+            String studOldClass = rs.getString("old_class");
+            int studNewClassID = rs.getInt("fk_new_class_id");
             list.add(new Student(studentID, studFirstName, studLastName, studOldClass, studNewClassID));
         }
         pstmnt.close(); // also closes related result set
@@ -76,7 +69,7 @@ public class SchoolDataAccess {
     public void updateClass(Student student, SchoolClass schoolClass)
             throws SQLException {
 
-        String dml = "UPDATE `student` SET `fk_stud_new_classID`= ? WHERE studentId = ?";
+        String dml = "UPDATE `student` SET `fk_new_class_id`= ? WHERE student_id = ?";
         PreparedStatement pstmnt = conn.prepareStatement(dml, PreparedStatement.RETURN_GENERATED_KEYS);
         pstmnt.setInt(1, schoolClass.getClassID());
         pstmnt.setInt(2, student.getStudentID());
@@ -85,7 +78,7 @@ public class SchoolDataAccess {
     }
 
     public String getSchoolClass(Student student) throws Exception{
-        String sql = "SELECT schoolclass.class_name FROM schoolclass JOIN student ON student.fk_stud_new_classID = schoolclass.class_ID WHERE student.studentId = ?";
+        String sql = "SELECT schoolclass.class_name FROM schoolclass JOIN student ON student.fk_new_class_id = schoolclass.class_ID WHERE student.student_Id = ?";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         pstmnt.setInt(1,student.getStudentID());
         ResultSet rs = pstmnt.executeQuery();
@@ -97,44 +90,44 @@ public class SchoolDataAccess {
         return className;
     }
 
-    public void insertGrades(int studID, String bioGrade, String mathGrade, String drawGrade, String gerGrade,
-                             String surfGrade, String phyGrade, String geoGrade) throws Exception{
-        String sql = "INSERT INTO studgrade VALUES (?, ?, ?)";
+    public void insertGrades(int studID, String mathGrade, String gerGrade, String engGrade, String bioGrade, String musGrade, String drawGrade,
+                             String surfGrade) throws Exception{
+        String sql = "INSERT INTO grade VALUES (?, ?, ?)";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
 
-        pstmnt.setString(1, bioGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 1);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, mathGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, mathGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 2);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, gerGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, drawGrade);
-        pstmnt.setInt(2, 3);
-        pstmnt.setInt(3, studID);
+        pstmnt.setInt(1, studID);
+        pstmnt.setInt(2,3);
+        pstmnt.setString(3, engGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, gerGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 4);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, bioGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, surfGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 5);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, musGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, phyGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 6);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, drawGrade);
         pstmnt.executeUpdate();
 
-        pstmnt.setString(1, geoGrade);
+        pstmnt.setInt(1, studID);
         pstmnt.setInt(2, 7);
-        pstmnt.setInt(3, studID);
+        pstmnt.setString(3, surfGrade);
         pstmnt.executeUpdate();
 
         pstmnt.close();
@@ -142,7 +135,7 @@ public class SchoolDataAccess {
 
     public boolean studentIdExists(Student student) throws SQLException {
 
-        String sql = "SELECT COUNT(fk_studentId) FROM studgrade WHERE fk_studentId = ?";
+        String sql = "SELECT COUNT(student_id) FROM grade WHERE student_id = ?";
         PreparedStatement pstmnt = conn.prepareStatement(sql);
         pstmnt.setInt(1, student.getStudentID());
         ResultSet rs = pstmnt.executeQuery();
