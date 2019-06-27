@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.school.project.model.Grade;
 
+import static java.sql.Types.NULL;
+
 @Controller
 public class LoginController {
 
@@ -79,12 +81,16 @@ public class LoginController {
         modelAndView.addObject("first_name", "Welcome " + student.getFirstName() + " " + student.getLastName() + " (" + student.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Student Role");
 
-        if (student.getFkNewClassId() == 1) {
+
             String result = "";
             for (Student students : studentRepository.findAll()) {
+                //if student is not null
+                if (students.getFkNewClassId()!= NULL){
+                    //check students and give back students with the same New Class number...
+                if(students.getFkNewClassId()==student.getFkNewClassId()){
                 result +=
                         "<table>" + students.toString() + "</table>";
-
+                }
             }
             modelAndView.addObject("classmates",result);
         }
