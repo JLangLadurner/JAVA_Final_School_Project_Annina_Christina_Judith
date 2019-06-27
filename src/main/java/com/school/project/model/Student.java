@@ -54,8 +54,8 @@ public class Student {
     @Column(name = "active")
     private int active;
 
-    @Column(name = "newClass")
-    private int newClass;
+    @Column(name = "fkNewClassId")
+    private int fkNewClassId;
 
 
     @Column(name = "status")
@@ -151,12 +151,12 @@ public class Student {
         this.status = status;
     }
 
-    public int getNewClass() {
-        return newClass;
+    public int getFkNewClassId() {
+        return fkNewClassId;
     }
 
-    public void setNewClass(int newClass) {
-        this.newClass = newClass;
+    public void setFkNewClassId(int newClass) {
+        this.fkNewClassId = newClass;
     }
 
     public Set<Grade> getGrade() {
