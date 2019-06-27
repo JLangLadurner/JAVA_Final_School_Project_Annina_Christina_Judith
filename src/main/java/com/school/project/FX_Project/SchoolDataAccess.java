@@ -18,7 +18,7 @@ public class SchoolDataAccess {
         //Open a connection
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/schoolTest1" +
+                "jdbc:mysql://localhost:3306/schoolTest" +
                         "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                 "root",
                 "");
