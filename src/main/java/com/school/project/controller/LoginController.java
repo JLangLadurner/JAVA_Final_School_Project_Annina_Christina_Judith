@@ -82,7 +82,8 @@ public class LoginController {
         if (student.getNewClass() == 1) {
             String result = "";
             for (Student students : studentRepository.findAll()) {
-                result += "<list>" + students.toString() + "</list>";
+                result +=
+                        "<table>" + students.toString() + "</table>";
 
             }
             modelAndView.addObject("adminMessage", result);

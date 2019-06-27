@@ -22,11 +22,14 @@
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <span th:utext="${userName}"></span>
+                <span th:utext="${first_name}"></span>
             </div>
             <div class="panel-body">
                 <img th:src="@{/images/happy.png}" class="img-responsive center-block" width="400" height="400"
                      alt="Kids"/>
+                <div  class="panel-body">
+                    <h2>Your classmates are: </h2>
+                </div>
             </div>
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
         </div>
