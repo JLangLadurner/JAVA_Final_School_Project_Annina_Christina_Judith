@@ -86,9 +86,10 @@ public class LoginController {
                         "<table>" + students.toString() + "</table>";
 
             }
-            modelAndView.addObject("adminMessage", result);
+            modelAndView.addObject("classmates",result);
         }
 
+        modelAndView.addObject("adminMessage");
         modelAndView.setViewName("/home");
         return modelAndView;
         }

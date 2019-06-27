@@ -27,8 +27,9 @@
             <div class="panel-body">
                 <img th:src="@{/images/happy.png}" class="img-responsive center-block" width="400" height="400"
                      alt="Kids"/>
-                <div  class="panel-body">
+                <div  class="class-message-text">
                     <h2>Your classmates are: </h2>
+                    <p id="class" th:utext="${classmates}"></p>
                 </div>
             </div>
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
